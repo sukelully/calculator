@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let num1 = 0;
     let num2 = 0;
     let operator;
+    let operatorChain = 0;
     let operatorOn = false;
 
     // Check if a string is an integer.
@@ -12,15 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Arithmetic functions.
-    const percent = (a, b) => (a / 100) * b;
+    const percent = (a, b) => (a / b) * 100;
     const add = (a, b) => a + b;
     const subtract = (a, b) => a - b;
     const multiply = (a, b) => a * b;
 
     const divide = (a, b) => {
         if (b === 0) {
-            console.error("Division by zero is not allowed.");
-            return NaN;
+            console.error("ERROR: Division by zero is not allowed.");
+            return 'ERROR';
         }
         return a / b;
     };
@@ -43,19 +44,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Do X when a number button is pressed.
     numbers.forEach((btn) => {
         btn.addEventListener('click', () => {
-            // console.log(display.textContent);
             if (display.textContent === '0') {
-                console.log(num2);
-                // console.log(btn.textContent);
                 display.textContent = btn.textContent;
                 num1 = btn.textContent.toString();
             } else {
                 if (!operatorOn) {
+                    console.log('test');
+                    if (operatorChain > 0) {
+                        num2 += btn.textContent.toString();
+                        // display.textContent = num2;
+                        runEquals();
+                    }
                     num1 += btn.textContent.toString();
                     display.textContent = num1;
                 } else {
                     num2 += btn.textContent.toString();
                     display.textContent = num2;
+                    operatorChain++;
                 }
             }
         });
@@ -64,12 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create array of action buttons and remove decimal button.
     const actions = buttons.filter((btn) => !isInteger(btn.textContent));
     actions.splice(-2, 1);
-    actions.forEach((item) => console.log(item));
 
     // AC button pressed, clear display.
     actions[0].addEventListener('click', () => {
         display.textContent = '0';
-        num1 = num2 = 0;
+        num1 = num2 = operatorChain = operatorOn = 0;
     });
 
     // Plus-minus pressed, change sign of current number on display.
@@ -83,40 +87,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Percent pressed, run percent().
     actions[2].addEventListener('click', () => {
-        console.log('percent');
+        checkChain();
+        num2 = '';
+        operator = 'percent';
+        operatorOn = true;
     });
 
-    // Plus pressed, run add().
+    // Divide.
     actions[3].addEventListener('click', () => {
-        num2= '';
-        operator = 'add';
-        operatorOn = true;
-    });
-
-    // Minus pressed, run subtract().
-    actions[4].addEventListener('click', () => {
-        num2= '';
-        operator = 'subtract';
-        operatorOn = true;
-    });
-
-    // Times pressed, run multiply().
-    actions[5].addEventListener('click', () => {
-        num2= '';
-        operator = 'multiply';
-        operatorOn = true;
-    });
-
-    // Divide pressed, run divide().
-    actions[6].addEventListener('click', () => {
-        num2= '';
+        checkChain();
+        num2 = '';
         operator = 'divide';
         operatorOn = true;
     });
 
-    // Equals pressed, run equals().
-    actions[7].addEventListener('click', () => {
-        if (operator === 'add') {
+    // Multiply.
+    actions[4].addEventListener('click', () => {
+        checkChain();
+        num2 = '';
+        operator = 'multiply';
+        operatorOn = true;
+    });
+
+    // Subtract.
+    actions[5].addEventListener('click', () => {
+        checkChain();
+        num2 = '';
+        operator = 'subtract';
+        operatorOn = true;
+    });
+
+    // Add.
+    actions[6].addEventListener('click', () => {
+        checkChain();
+        num2 = '';
+        operator = 'add';
+        operatorOn = true;
+    });
+
+    // Runs equals if this not the first time an operator has been used.
+    function checkChain() {
+        if (operatorChain > 0) {
+            runEquals();
+            operatorChain = 0;
+        }
+    }
+
+    function runEquals() {
+        if (operator === 'percent') {
+            display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), percent);
+        } else if (operator === 'add') {
             display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), add);
         } else if (operator === 'subtract') {
             display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), subtract);
@@ -126,9 +146,16 @@ document.addEventListener('DOMContentLoaded', () => {
             display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), divide);
         } else {
             display.textContent = 'ERROR';
-            console.log('ERROR: Unknown operator')
+            console.log('ERROR: Unknown operator.')
         }
         operatorOn = false;
         num1 = display.textContent;
+        operatorChain = 0;
+        console.log(operatorChain);
+    }
+
+    // Equals pressed, run equals().
+    actions[7].addEventListener('click', () => {
+        runEquals();
     });
 });

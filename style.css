@@ -3,6 +3,15 @@
     src: url('./Calculator.ttf');
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+.roboto-mono {
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -34,10 +43,10 @@ main {
 .calc {
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 20px;
     /* height: 600px; */
     width: 400px;
-    gap: 10px;
+    gap: 15px;
     /* align-items: stretch; */
 }
 
@@ -49,8 +58,8 @@ main {
 .display {
     font-family: 'Calculator';
     /* height: 8px; */
-    font-size: 3.5rem;
-    padding: 10px 10px;
+    font-size: 4.5rem;
+    padding: 10px 15px;
     text-align: right;
     background-color: #e0fff4;
     border-radius: 7px;
@@ -67,6 +76,7 @@ main {
 .row > button {
     flex: 1;
     font-size: 1.25rem;
+    font-family: 'Roboto Mono', monospace;
     /* border: none; */
 }
 
