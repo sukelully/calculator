@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     numbers.sort((a, b) => parseInt(a.textContent, 10) - parseInt(b.textContent, 10));
     numbers.push(decimalBtn);
 
+    // Controls edge-cases for error display.
     function parseInput() {
         if (display.textContent === 'ERROR') clearAll();
         if (isNaN(parseInt(display.textContent, 10))) {
@@ -64,16 +65,16 @@ document.addEventListener('DOMContentLoaded', () => {
     numbers.forEach((btn) => {
         btn.addEventListener('click', () => {
             parseInput();
-            // Set display text
+            // If display === 0 (eg cleared state), set display value instead of adding to it.
             if (display.textContent === '0') {
                 display.textContent = btn.textContent;
                 num1 = btn.textContent.toString();
             } else {
                 if (!operatorOn) {
-                    // If this is the second operator pressed, also run equals.
+                    // If this is the second time an operator has been pressed, also run equals().
                     if (operatorChain > 0) {
                         num2 += btn.textContent.toString();
-                        runEquals();
+                        equals();
                     }
                     num1 += btn.textContent.toString();
                     display.textContent = num1;
@@ -152,12 +153,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Runs equals if this not the first time an operator has been used.
     function checkChain() {
         if (operatorChain > 0) {
-            runEquals();
+            equals();
             operatorChain = 0;
         }
     }
 
-    function runEquals() {
+    function equals() {
         if (operator === 'percent') {
             display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), percent)
         } else if (operator === 'add') {
@@ -170,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), divide);
         } else {
             display.textContent = 'ERROR';
-            console.log('ERROR: Unknown operator.')
+            console.error('ERROR: Unknown operator.')
         }
         if (parseInt(display.textContent, 10) > 99999999999) {
             display.textContent = num1 = num2 = 'INFTY';
@@ -183,6 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Equals pressed, run equals().
     actions[7].addEventListener('click', () => {
-        runEquals();
+        equals();
     });
 });
