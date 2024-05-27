@@ -1,0 +1,45 @@
+* {
+    box-sizing: border-box;
+}
+
+div {
+    border: 1px solid black;
+}
+
+html, main, body {
+    margin: 0;
+    height: 100%;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calc-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.calc {
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    width: 400px;
+    /* align-items: stretch; */
+}
+
+.row {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.row > button {
+    flex: 1;
+}
+
+#equal-btn {
+    flex-grow: 2.19;
+}
