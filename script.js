@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const add = (a, b) => a + b;
     const subtract = (a, b) => a - b;
     const multiply = (a, b) => a * b;
-
     const divide = (a, b) => {
         if (b === 0) {
             console.error("ERROR: Division by zero is not allowed.");
@@ -27,7 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function operate(a, b, operator) {
-        return operator(a, b);
+        if (isNaN(a) || isNaN(b)) return 'ERROR';
+        return round(operator(a, b));
+    }
+
+    function round(num) {
+        return Math.round(num * 10000000000) / 10000000000;
+    }
+
+    function returnError() {
+        display.textContent = num1 = num2 = 'ERROR';
     }
 
     // References to various calculator elements.
@@ -41,18 +49,30 @@ document.addEventListener('DOMContentLoaded', () => {
     numbers.sort((a, b) => parseInt(a.textContent, 10) - parseInt(b.textContent, 10));
     numbers.push(decimalBtn);
 
-    // Do X when a number button is pressed.
+    function parseInput() {
+        if (display.textContent === 'ERROR') clearAll();
+        if (isNaN(parseInt(display.textContent, 10))) {
+            returnError();
+            return;
+        }
+        if (display.textContent.length > 12) {
+            returnError();
+        }
+    }
+
+    // Listen for button presses.
     numbers.forEach((btn) => {
         btn.addEventListener('click', () => {
+            parseInput();
+            // Set display text
             if (display.textContent === '0') {
                 display.textContent = btn.textContent;
                 num1 = btn.textContent.toString();
             } else {
                 if (!operatorOn) {
-                    console.log('test');
+                    // If this is the second operator pressed, also run equals.
                     if (operatorChain > 0) {
                         num2 += btn.textContent.toString();
-                        // display.textContent = num2;
                         runEquals();
                     }
                     num1 += btn.textContent.toString();
@@ -70,10 +90,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const actions = buttons.filter((btn) => !isInteger(btn.textContent));
     actions.splice(-2, 1);
 
-    // AC button pressed, clear display.
-    actions[0].addEventListener('click', () => {
+    function clearAll() {
         display.textContent = '0';
         num1 = num2 = operatorChain = operatorOn = 0;
+    }
+
+    // AC button pressed, clear display.
+    actions[0].addEventListener('click', () => {
+        clearAll();
     });
 
     // Plus-minus pressed, change sign of current number on display.
@@ -135,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function runEquals() {
         if (operator === 'percent') {
-            display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), percent);
+            display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), percent)
         } else if (operator === 'add') {
             display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), add);
         } else if (operator === 'subtract') {
@@ -147,6 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             display.textContent = 'ERROR';
             console.log('ERROR: Unknown operator.')
+        }
+        if (parseInt(display.textContent, 10) > 99999999999) {
+            display.textContent = num1 = num2 = 'INFTY';
         }
         operatorOn = false;
         num1 = display.textContent;
