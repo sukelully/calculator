@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Calculator variables.
-    let num1;
-    let num2;
+    let num1 = 0;
+    let num2 = 0;
     let operator;
     let operatorOn = false;
 
@@ -43,14 +43,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Do X when a number button is pressed.
     numbers.forEach((btn) => {
         btn.addEventListener('click', () => {
-            if (!operatorOn) {
-                num1 = parseInt(btn.textContent, 10);
-                console.log(`num1 = ${num1}`);
+            // console.log(display.textContent);
+            if (display.textContent === '0') {
+                // console.log(btn.textContent);
+                display.textContent = btn.textContent;
+                num1 = btn.textContent.toString();
             } else {
-                num2 = parseInt(btn.textContent, 10);
-                console.log(`num2 = ${num2}`)
+                if (!operatorOn) {
+                    num1 += btn.textContent.toString();
+                    console.log(`num1 = ${num1}`);
+                    display.textContent = num1;
+                } else {
+                    num2 += btn.textContent.toString();
+                    console.log(`num2 = ${num2}`);
+                    display.textContent = num2;
+                }
             }
-            display.textContent = btn.textContent;
         });
     });
 
@@ -62,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // AC button pressed, clear display.
     actions[0].addEventListener('click', () => {
         display.textContent = '0';
+        num1 = num2 = 0;
     });
 
     // Plus-minus pressed, change sign of current number on display.
@@ -72,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             display.textContent = 'ERROR';
         }
     });
-    
+
     // Percent pressed, run percent().
     actions[2].addEventListener('click', () => {
         console.log('percent');
@@ -98,11 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
     actions[6].addEventListener('click', () => {
         console.log('divide');
     });
-    
+
     // Equals pressed, run equals().
     actions[7].addEventListener('click', () => {
         if (operator === 'add') {
-            display.textContent = operate(num1, num2, add);
+            display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), add);
         }
     });
 });
