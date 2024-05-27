@@ -8,7 +8,7 @@
 }
 
 div {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 html, main, body {
@@ -28,6 +28,7 @@ main {
     justify-content: center;
     align-items: center;
     background-color: #252525;
+    border-radius: 7px;
 }
 
 .calc {
@@ -52,6 +53,7 @@ main {
     padding: 10px 10px;
     text-align: right;
     background-color: #e0fff4;
+    border-radius: 7px;
 }
 
 /* Button rows */
@@ -76,6 +78,7 @@ main {
 button {
     background-color: #757575;
     color: white;
+    border-radius: 7px;
 }
 
 .action {
