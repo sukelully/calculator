@@ -45,17 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             // console.log(display.textContent);
             if (display.textContent === '0') {
+                console.log(num2);
                 // console.log(btn.textContent);
                 display.textContent = btn.textContent;
                 num1 = btn.textContent.toString();
             } else {
                 if (!operatorOn) {
                     num1 += btn.textContent.toString();
-                    console.log(`num1 = ${num1}`);
                     display.textContent = num1;
                 } else {
                     num2 += btn.textContent.toString();
-                    console.log(`num2 = ${num2}`);
                     display.textContent = num2;
                 }
             }
@@ -76,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Plus-minus pressed, change sign of current number on display.
     actions[1].addEventListener('click', () => {
         if (display.textContent !== '0') {
-            display.textContent = parseInt(display.textContent, 10) * -1;
+            display.textContent = num1 = parseInt(display.textContent, 10) * -1;
         } else {
             display.textContent = 'ERROR';
         }
@@ -89,29 +88,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Plus pressed, run add().
     actions[3].addEventListener('click', () => {
+        num2= '';
         operator = 'add';
-        operatorOn = !operatorOn;
+        operatorOn = true;
     });
 
     // Minus pressed, run subtract().
     actions[4].addEventListener('click', () => {
-        console.log('minus');
+        num2= '';
+        operator = 'subtract';
+        operatorOn = true;
     });
 
     // Times pressed, run multiply().
     actions[5].addEventListener('click', () => {
-        console.log('multiply');
+        num2= '';
+        operator = 'multiply';
+        operatorOn = true;
     });
 
     // Divide pressed, run divide().
     actions[6].addEventListener('click', () => {
-        console.log('divide');
+        num2= '';
+        operator = 'divide';
+        operatorOn = true;
     });
 
     // Equals pressed, run equals().
     actions[7].addEventListener('click', () => {
         if (operator === 'add') {
             display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), add);
+        } else if (operator === 'subtract') {
+            display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), subtract);
+        } else if (operator === 'multiply') {
+            display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), multiply);
+        } else if (operator === 'divide') {
+            display.textContent = operate(parseInt(num1, 10), parseInt(num2, 10), divide);
+        } else {
+            display.textContent = 'ERROR';
+            console.log('ERROR: Unknown operator')
         }
+        operatorOn = false;
+        num1 = display.textContent;
     });
 });
