@@ -35,29 +35,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create array of number buttons and sort it, push decimal button.
     const buttons = Array.from(btnNodeList);
-    const numbers = buttons.filter(item => isInteger(item.textContent));
-    const actions = buttons.filter(item => !isInteger(item.textContent));
+    const numbers = buttons.filter((btn) => isInteger(btn.textContent));
     numbers.sort((a, b) => parseInt(a.textContent, 10) - parseInt(b.textContent, 10));
     numbers.push(decimalBtn);
 
     // Do X when a number button is pressed.
     numbers.forEach((btn) => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', () => {
             display.textContent = btn.textContent;
         });
     });
 
     // Create array of action buttons and remove decimal button.
+    const actions = buttons.filter((btn) => !isInteger(btn.textContent));
     actions.splice(-2, 1);
     actions.forEach((item) => console.log(item));
 
     // AC button pressed, clear display.
-    actions[0].addEventListener('click', function() {
+    actions[0].addEventListener('click', () => {
         display.textContent = '';
     });
 
     // Plus-minus pressed, change sign of current number on display.
-    actions[1].addEventListener('click', function() {
+    actions[1].addEventListener('click', () => {
         if (display.textContent) {
             display.textContent = parseInt(display.textContent, 10) * -1;
         } else {
@@ -66,32 +66,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Percent pressed, run percent().
-    actions[2].addEventListener('click', function() {
+    actions[2].addEventListener('click', () => {
         console.log('percent');
     });
 
     // Plus pressed, run add().
-    actions[3].addEventListener('click', function() {
+    actions[3].addEventListener('click', () => {
         console.log('plus');
     });
 
     // Minus pressed, run subtract().
-    actions[4].addEventListener('click', function() {
+    actions[4].addEventListener('click', () => {
         console.log('minus');
     });
 
     // Times pressed, run multiply().
-    actions[5].addEventListener('click', function() {
+    actions[5].addEventListener('click', () => {
         console.log('multiply');
     });
 
     // Divide pressed, run divide().
-    actions[6].addEventListener('click', function() {
+    actions[6].addEventListener('click', () => {
         console.log('divide');
     });
     
     // Equals pressed, run equals().
-    actions[7].addEventListener('click', function() {
+    actions[7].addEventListener('click', () => {
         console.log('equals');
     });
 });
